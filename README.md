@@ -2,18 +2,28 @@
 
 Content:
 1.	Introduction:
+
 1.1.	What is the Talespins project
+
 1.2.	Why this topic
+
 2.	General approach:
+
 1.1.	Python folder
+
 1.2.	Templates folder
+
 1.3.	Images folder
+
 3.	Code Description:
+
 3.1.	generate_article function
+
 3.2.	generate_images function
+
 3.3.	app function
+
 3.4.	Index.html code
-4.	Links
 
 
 
