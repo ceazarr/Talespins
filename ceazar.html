@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Article</title>
+
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px;
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header {
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .section-image {
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+
+        .section-text {
+            max-width: 800px;
+            text-align: justify;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+
+        .form-label {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .form-input {
+            font-size: 1.2em;
+            padding: 10px;
+            margin-bottom: 20px;
+            max-width: 500px;
+            width: 100%;
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-submit {
+            font-size: 1.2em;
+            padding: 10px;
+            max-width: 500px;
+            width: 100%;
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            background-color: #0A79DF;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-right: 10px;
+        }
+
+        .form-submit:hover {
+            background-color: #0A5FC9;
+        }
+
+        .image-submit {
+            font-size: 1.2em;
+            padding: 10px;
+            max-width: 500px;
+            width: 100%;
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            background-color: #0A79DF;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-right: 10px;
+        }
+
+        .image-submit:hover {
+            background-color: #0A5FC9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <label class="form-label" for="topic-input">Enter a topic:</label>
+            <input class="form-input" type="text" id="topic-input" name="topic">
+            <button class="form-submit" type="button" onclick="generateArticle()">Generate Article</button>
+            <button class="image-submit" type="button" onclick="generateImages()">Generate Images</button>
+        </div>
+
+        <div id="article-container">
+        </div>
+
+        {% if image_urls %}
+        <div class="section">
+            <h2 class="section-header">Related Images</h2>
+            {% for url in image_urls %}
+            <img class="image" src="/templates/{{ url }}" alt="Related image">
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div>
+            <img src="static/webstory_ceazar/imgs/image0.jpg"></img>
+            <img src="static/webstory_ceazar/imgs/image1.jpg"></img>
+            <img src="static/webstory_ceazar/imgs/image2.jpg"></img>
+        </div>
+        <script>
+            function generateArticle() {
+                var topic = document.getElementById("topic-input").value;
+
+                // Send an AJAX request to the Flask app to generate the article
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("article-container").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("GET", "/generate-article?topic=" + topic, true);
+                xhttp.send();
+            }
+
+            function generateImages() {
+                var topic = document.getElementById("topic-input").value;
+
+                // Send an AJAX request to the Flask app to generate the images
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var image_data = JSON.parse(this.responseText);
+                        var image_urls = image_data.image_urls;
+                        var section_html = '<div class="section"><h2 class="section-header">Related Images</h2>';
+                        for (var i = 0; i < image_urls.length; i++) {
+                            section_html += '<img class="section-image" src="' + image_urls[i] + '" alt="Related image">';
+                        }
+                        section_html += '</div>';
+                        document.getElementById("article-container").insertAdjacentHTML('beforeend', section_html);
+                    }
+                };
+                xhttp.open("GET", "/generate-images?topic=" + topic, true);
+                xhttp.send();
+            }
+
+
+        </script>
+    </div>
+</body>
