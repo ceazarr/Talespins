@@ -231,18 +231,6 @@ def generate_images_route():
 
 
 
-
-
-
-# by jinxin the remove
-# @app.route('/ceazar1', methods=["POST"])
-# def testAnother():
-#     print("hello")
-#     mytopic = "a cute dog"
-#     return ceazarFunction.generate_article(mytopic)
-
-
-
 #####################################################################################
 #############################END Ceazar Haddad#######################################
 #####################################################################################
